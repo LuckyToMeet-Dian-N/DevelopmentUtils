@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+  namesrv:
+    image: fengzt/rocketmq-nameserver
+    container_name: rmqnamesrv
+    ports:
+      - 9876:9876
+    volumes:
+      - ./data/logs:/opt/logs
+      - ./data/store:/opt/store
+    command: sh mqnamesrv
+  broker:
+    image: fengzt/rocketmq-broker 
+    container_name: rmqbroker
+    ports:
+      - 10909:10909
+      - 10911:10911
+    volumes:
+      - ./data/logs:/opt/logs
+      - ./data/store:/opt/store
+      - ./data/brokerconf/broker.conf:/etc/rocketmq/broker.conf  
+    command: sh mqbroker -n namesrv:9876
+    depends_on:
+      - namesrv
+
+  rmqconsole:
+    image: styletang/rocketmq-console-ng
+    container_name: rmqconsole
+    ports:
+      - 8080:8080
+    environment:
+      NAMESRV_ADDR: "rmqnamesrv:9876"
+      JAVA_OPTS: " -Duser.home=/opt"
+      JAVA_OPT_EXT: "-server -Xms128m -Xmx128m -Xmn128m"
+            #JAVA_OPTS: "-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+    depends_on:
+      - namesrv
+    networks:
+      rmq:
+        aliases:
+          - rmqconsole
+
+networks:
+  rmq:
+    name: rmq
+    driver: bridge
