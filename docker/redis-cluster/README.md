@@ -1,7 +1,12 @@
 # DevelopmentUtils
 下载后
 redis 文件夹中保存的是 master 和 slaves 的docker-compose.yml 信息
-如果想使用，vim 该文件，将里面的 ip 修改为自己的 ip 即可
+如果想使用，vim 该文件，将里面的 ip 修改为自己的 ip 即可。
+
+**注意**
+> --requirepass 密码 --masterauth 密码              
+
+上面两个在 redis 文件夹下的 docker-compose.yml 中，两个密码尽量相同，不同可能会出现错误
 
 sentinel 文件中保存的是哨兵文件信息
 使用时，将 sentinel中每个文件夹的中的 ip 修改为自己的 ip 即可
