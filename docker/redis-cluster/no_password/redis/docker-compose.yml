@@ -5,18 +5,18 @@ services:
     container_name: redis-master
     restart: always
     command: redis-server --port 6379
-    network_mode: "host"
+    #network_mode: "host"
 
   slave1:
     image: redis
     container_name: redis-slave-1
     restart: always
     command: redis-server --slaveof 172.16.81.145 6379 --port 6380
-    network_mode: "host"
+    #network_mode: "host"
 
   slave2:
     image: redis
     container_name: redis-slave-2
     restart: always
     command: redis-server --slaveof 172.16.81.145 6379 --port 6381
-    network_mode: "host"
+    #network_mode: "host"
